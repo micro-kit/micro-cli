@@ -2,6 +2,7 @@ package version
 
 import (
 	"fmt"
+	"log"
 
 	"github.com/mitchellh/cli"
 )
@@ -22,7 +23,7 @@ type cmd struct {
 }
 
 func (c *cmd) Run(_ []string) int {
-	c.UI.Output(fmt.Sprintf("micro-cli %s\ngitHash: %s", c.version, c.gitHash))
+	log.Println(fmt.Sprintf("micro-cli %s\ngitHash: %s", c.version, c.gitHash))
 	return 0
 }
 

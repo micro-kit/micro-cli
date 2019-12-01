@@ -52,7 +52,7 @@ func printFlag(w io.Writer, f *flag.Flag) {
 	}
 
 	indented := wrapAtLength(f.Usage, 5)
-	fmt.Fprintf(w, "%s\n\n", indented)
+	fmt.Fprintf(w, "%s\n", indented)
 }
 
 // contains returns true if the given flag is contained in the given flag
