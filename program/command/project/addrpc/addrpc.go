@@ -5,9 +5,11 @@ import (
 	"log"
 	"os"
 	"strings"
+	"text/template"
 
 	"github.com/micro-kit/micro-cli/program/command/flags"
 	"github.com/micro-kit/micro-cli/program/common"
+	"github.com/micro-kit/micro-cli/tpls"
 	"github.com/mitchellh/cli"
 )
 
@@ -112,8 +114,45 @@ func (c *cmd) addSvcRpc() int {
 		"Comment":                c.comment,
 		"RpcType":                common.StrFirstToUpper(c.rpcType, true),
 	}
-
+	err := c.TplFileNew("rpc/rpc.tpl", serviceFilePath, c.tplData)
+	if err != nil {
+		log.Println("解析模版并写入服务文件错误", err)
+		return 1
+	}
 	return 0
+}
+
+// TplFileNew 替换文件中的变量，写入到对应目录
+func (c *cmd) TplFileNew(inFileName, outFilePath string, data map[string]interface{}) (err error) {
+	// 获取模版文件名
+	inFileInfo, err := tpls.AssetInfo(inFileName)
+	if err != nil {
+		return
+	}
+	inFName := inFileInfo.Name()
+	// 读取模版内容
+	tplBytes, err := tpls.Asset(inFileName)
+	if err != nil {
+		return
+	}
+	// outFileName := outFilePath + "/" + inFName
+	loggingTpl := template.New(inFName)
+	t, err := loggingTpl.Parse(string(tplBytes))
+	if err != nil {
+		return
+	}
+	// log.Println(outFilePath)
+	// 打开文件
+	outFile, err := os.OpenFile(outFilePath, os.O_WRONLY|os.O_CREATE, 0755)
+	if err != nil {
+		return
+	}
+	defer outFile.Close()
+	err = t.Execute(outFile, data)
+	if err != nil {
+		return err
+	}
+	return
 }
 
 func (c *cmd) Synopsis() string {

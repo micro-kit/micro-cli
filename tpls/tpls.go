@@ -23,6 +23,7 @@
 // client/proto/tpl/admin.proto
 // client/proto/tpl/foreground.proto
 // client/proto/tpl/gen.sh
+// rpc/rpc.tpl
 package tpls
 
 import (
@@ -559,6 +560,26 @@ func clientProtoTplGenSh() (*asset, error) {
 	return a, nil
 }
 
+var _rpcRpcTpl = []byte("\x1f\x8b\x08\x00\x00\x00\x00\x00\x00\xff\xd2\xd7\x57\xa8\xae\x56\xd0\x0b\x2a\x48\xf6\x4b\xcc\x4d\x55\xa8\xad\x05\x73\x9d\xf3\x73\x73\x53\xf3\x4a\x14\x6a\x6b\xb9\xd2\x4a\xf3\x92\x15\x34\x8a\x15\xb4\xa0\xca\x42\x2a\x0b\x40\xca\x34\xd1\xb4\x69\x24\x97\x54\x28\x24\xe7\xe7\x95\xa4\x56\x94\xe8\x39\x43\x68\x1d\x85\xa2\xd4\x42\x88\x46\xa7\xc4\xe2\xd4\xe0\xd4\xa2\xb2\xcc\xe4\x54\x90\x06\xbf\xfc\x12\x9f\xcc\x3c\x90\xbe\x82\x24\x3d\x54\x83\x82\x52\x0b\x4b\x53\x8b\x4b\x34\x15\x34\x48\xd6\x58\x90\x53\xa9\xa3\x90\x5a\x54\x94\x5f\xa4\xa9\x50\xcd\xa5\xa0\xa0\xa0\xa0\xaf\xaf\xf0\x72\x55\xcf\x8b\xf5\x8d\x4f\xfb\x9b\x9e\x4d\xdd\xf0\x6c\xc6\xfa\xa7\x13\x96\xbd\x9c\x32\xf3\xc5\xfa\xf5\x5c\x30\x05\x21\xfe\x2e\xfe\x0a\x2f\x1b\x76\xbf\xd8\x37\xf1\xc9\xee\xc5\xcf\x17\x34\xc2\x65\x5e\xec\x9f\xf2\x74\xf6\xbc\xe7\xbb\x27\x3f\x9b\x37\x87\x8b\xb3\x08\x64\xbe\x82\x95\xad\x82\x1a\x19\xee\xaa\xe6\xe2\xac\x05\x19\x51\x52\x5a\x94\xa7\x50\x04\x71\x69\x5e\x66\x0e\x57\x2d\x17\x20\x00\x00\xff\xff\x77\x16\x1f\x10\x81\x01\x00\x00")
+
+func rpcRpcTplBytes() ([]byte, error) {
+	return bindataRead(
+		_rpcRpcTpl,
+		"rpc/rpc.tpl",
+	)
+}
+
+func rpcRpcTpl() (*asset, error) {
+	bytes, err := rpcRpcTplBytes()
+	if err != nil {
+		return nil, err
+	}
+
+	info := bindataFileInfo{name: "rpc/rpc.tpl", size: 385, mode: os.FileMode(420), modTime: time.Unix(1575368165, 0)}
+	a := &asset{bytes: bytes, info: info}
+	return a, nil
+}
+
 // Asset loads and returns the asset for the given name.
 // It returns an error if the asset could not be found or
 // could not be loaded.
@@ -634,6 +655,7 @@ var _bindata = map[string]func() (*asset, error){
 	"client/proto/tpl/admin.proto":                clientProtoTplAdminProto,
 	"client/proto/tpl/foreground.proto":           clientProtoTplForegroundProto,
 	"client/proto/tpl/gen.sh":                     clientProtoTplGenSh,
+	"rpc/rpc.tpl":                                 rpcRpcTpl,
 }
 
 // AssetDir returns the file names below a certain
@@ -719,6 +741,9 @@ var _bintree = &bintree{nil, map[string]*bintree{
 			"test.sh":       &bintree{microserviceTestTestSh, map[string]*bintree{}},
 		}},
 		"version": &bintree{microserviceVersion, map[string]*bintree{}},
+	}},
+	"rpc": &bintree{nil, map[string]*bintree{
+		"rpc.tpl": &bintree{rpcRpcTpl, map[string]*bintree{}},
 	}},
 }}
 
