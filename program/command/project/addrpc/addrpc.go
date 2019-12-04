@@ -1,6 +1,7 @@
 package addrpc
 
 import (
+	"bytes"
 	"flag"
 	"log"
 	"os"
@@ -98,7 +99,7 @@ func (c *cmd) Run(args []string) int {
 // addSvcRpc 创建rpc服务方法
 func (c *cmd) addSvcRpc() int {
 	// 项目路径
-	projectPath := os.Getenv("GOPATH") + "/src/" + strings.Trim(c.rootPath, "/") + "/" + c.serviceName
+	projectPath := os.Getenv("GOPATH") + "/src/" + strings.Trim(c.rootPath, "/") + "/" + c.serviceName + "-service"
 	log.Println("项目路径", projectPath)
 	servicePath := projectPath + "/program/services"
 	var serviceFilePath string
@@ -114,6 +115,7 @@ func (c *cmd) addSvcRpc() int {
 		"Comment":                c.comment,
 		"RpcType":                common.StrFirstToUpper(c.rpcType, true),
 	}
+	// 写服务rpc方法
 	err := c.TplFileNew("rpc/rpc.tpl", serviceFilePath, c.tplData)
 	if err != nil {
 		log.Println("解析模版并写入服务文件错误", err)
@@ -143,16 +145,49 @@ func (c *cmd) TplFileNew(inFileName, outFilePath string, data map[string]interfa
 	}
 	// log.Println(outFilePath)
 	// 打开文件
-	outFile, err := os.OpenFile(outFilePath, os.O_WRONLY|os.O_CREATE, 0755)
+	outFile, err := os.OpenFile(outFilePath, os.O_CREATE|os.O_APPEND|os.O_RDWR, 0755)
 	if err != nil {
 		return
 	}
 	defer outFile.Close()
-	err = t.Execute(outFile, data)
+	buff := bytes.NewBuffer([]byte("\n"))
+	err = t.Execute(buff, data)
+	if err != nil {
+		return err
+	}
+	defer buff.Reset()
+	_, err = outFile.Write(buff.Bytes())
 	if err != nil {
 		return err
 	}
 	return
+}
+
+// AddProtoRpc 添加pb文件rpc方法
+func (c *cmd) addProtoRpc() int {
+	// 项目路径
+	projectPath := os.Getenv("GOPATH") + "/src/" + strings.Trim(c.rootPath, "/") + "/" + c.serviceName + "-service"
+	log.Println("项目路径", projectPath)
+	servicePath := projectPath + "/program/services"
+	var serviceFilePath string
+	if c.rpcType == "Admin" {
+		serviceFilePath = servicePath + "/admin.go"
+	} else {
+		serviceFilePath = servicePath + "/foreground.go"
+	}
+	// 模版参数
+	c.tplData = map[string]interface{}{
+		"BaseServiceNameNotLine": strings.ReplaceAll(c.serviceName, "-", ""),
+		"RpcName":                common.StrFirstToUpper(c.rpcName, true),
+		"Comment":                c.comment,
+		"RpcType":                common.StrFirstToUpper(c.rpcType, true),
+	}
+	// 写服务rpc方法
+	err := c.TplFileNew("rpc/rpc.tpl", serviceFilePath, c.tplData)
+	if err != nil {
+		log.Println("解析模版并写入服务文件错误", err)
+		return 1
+	}
 }
 
 func (c *cmd) Synopsis() string {
@@ -165,5 +200,5 @@ func (c *cmd) Help() string {
 
 const synopsis = "在创建一个rpc服务方法时的服务命令，可以生成pb服务和服务中服务方法，不包含具体参数"
 const help = `
-Usage: micro-cli project addsvc [options]
+Usage: micro-cli addrpc [options]
 `
