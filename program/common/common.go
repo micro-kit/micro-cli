@@ -1,13 +1,43 @@
 package common
 
 import (
+	"fmt"
 	"os"
+	"path/filepath"
 	"sort"
 	"strings"
 	"unicode"
 )
 
 /* 公共小函数库 */
+
+// IsBasicType 判断是否是go基础数据类型
+func IsBasicType(name string) bool {
+	basicType := []string{
+		"uint8", "uint16", "uint32", "uint64", "int8", "int16", "int32", "int64",
+		"float32", "float64", "complex64", "complex128",
+		"byte", "rune", "uint", "int", "uintptr",
+		"bool", "string",
+	}
+	for _, v := range basicType {
+		if v == name {
+			return true
+		}
+	}
+	return false
+}
+
+// GetRootDir 获取执行路径
+func GetRootDir() string {
+	// 文件不存在获取执行路径
+	file, err := filepath.Abs(filepath.Dir(os.Args[0]))
+	if err != nil {
+		file = fmt.Sprintf(".%s", string(os.PathSeparator))
+	} else {
+		file = fmt.Sprintf("%s%s", file, string(os.PathSeparator))
+	}
+	return file
+}
 
 // PathExists 判断文件或目录是否存在
 func PathExists(path string) (bool, error) {

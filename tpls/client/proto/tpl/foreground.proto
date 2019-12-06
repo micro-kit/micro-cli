@@ -5,5 +5,4 @@ option go_package = "{{ .BaseServiceNameNotLine }}pb";
 
 // {{ .BaseServiceNameHump }} 服务定义
 service {{ .BaseServiceNameHump }} {
-  
 }

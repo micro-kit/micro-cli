@@ -1,3 +1,4 @@
+
 /* {{ .Comment }} */
 message {{ .RpcName }}Request {
 }

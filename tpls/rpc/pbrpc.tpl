@@ -1,2 +1,2 @@
-// {{ .RpcName }} {{ .Comment }}
-rpc {{ .RpcName }} ({{ .RpcName }}Request) returns ({{ .RpcName }}Reply) {}
+    // {{ .RpcName }} {{ .Comment }}
+    rpc {{ .RpcName }} ({{ .RpcName }}Request) returns ({{ .RpcName }}Reply) {}

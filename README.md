@@ -10,3 +10,10 @@ ServiceName 服务名 中华线分割
 RootPath 服务根目录
 
 MicroKitClientRoot 客户端库根路径
+
+
+## 备注
+defer必须使用如下做法
+defer func() {
+    PASS
+}()

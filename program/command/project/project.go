@@ -55,16 +55,23 @@ type cmd struct {
 	rootPath        string                 // 项目根路径 - 服务上层文件相对GOPATH路径
 	clientRootPath  string                 // 客户端库目录
 	serviceName     string                 // 服务名-此名是输入参数拼接-service
+	serviceDesc     string                 // 服务文本描述，介绍功能
 	baseServiceName string                 // 输入参数服务名
 	tplData         map[string]interface{} // 模版替换参数
 }
 
 func (c *cmd) init() {
 	c.flags = flag.NewFlagSet("", flag.ContinueOnError)
-	c.flags.StringVar(&c.serviceName, "name", "", "当前服务名")                                                                                                        // 服务名称
+	c.flags.StringVar(&c.serviceName, "name", "", "服务名")                                                                                                          // 服务名称
+	c.flags.StringVar(&c.serviceDesc, "desc", "", "服务描述")                                                                                                         // 服务描述
 	c.flags.StringVar(&c.rootPath, "root", "", "服务上层目录相对GOPATH路径\n为空取环境变量ROOT_PATH\n默认github.com/micro-kit，$GOPATH/src/$root")                                    // 项目根路径
 	c.flags.StringVar(&c.clientRootPath, "croot", "", "服务客户端库相对GOPATH路径\n为空取环境变量MICROKIT_CLIENT_ROOT\n默认github.com/micro-kit/microkit-client，$GOPATH/src/$croot") // 项目根路径
 
+	c.help = flags.Usage(help, c.flags)
+}
+
+// 通过环境变量处理默认值
+func (c *cmd) initEnv() {
 	// 处理默认值
 	if c.rootPath == "" {
 		c.rootPath = os.Getenv("ROOT_PATH")
@@ -81,14 +88,16 @@ func (c *cmd) init() {
 	// 去除右侧/
 	c.rootPath = strings.TrimRight(c.rootPath, "/")
 	c.clientRootPath = strings.TrimRight(c.clientRootPath, "/")
-
-	c.help = flags.Usage(help, c.flags)
 }
 
 func (c *cmd) Run(args []string) int {
 	if err := c.flags.Parse(args); err != nil {
 		return 1
 	}
+
+	// 处理环境变量默认值
+	c.initEnv()
+
 	// 服务名不能为空
 	if c.serviceName == "" {
 		log.Println("服务名不能为空")
