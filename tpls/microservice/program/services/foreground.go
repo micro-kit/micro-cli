@@ -16,3 +16,10 @@ import (
 type Foreground struct {
 	Base
 }
+
+// NewForeground 创建客户端rpc对象
+func NewForeground() *Foreground {
+	return &Foreground{
+		Base: NewBase(),
+	}
+}

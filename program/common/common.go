@@ -56,7 +56,7 @@ func StrFirstToUpper(str string, isFirst bool) string {
 	if str == "" {
 		return ""
 	}
-	temp := strings.Split(str, "_")
+	temp := strings.Split(str, "-")
 	for i := 0; i < len(temp); i++ {
 		if isFirst == false && i == 0 {
 			temp[i] = FirstToLower(temp[i])

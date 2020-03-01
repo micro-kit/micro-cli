@@ -32,8 +32,11 @@ func New() *Program {
 
 // Run 运行程序
 func (p *Program) Run() {
+	// 前端服务对象
+	foreground := services.NewForeground()
+	// 启动服务
 	p.srv.Serve(func(grpcServer *grpc.Server) {
-		{{ .BaseServiceNameNotLine }}pb.Register{{ .BaseServiceNameHump }}Server(grpcServer, new(services.Foreground))
+		{{ .BaseServiceNameNotLine }}pb.Register{{ .BaseServiceNameHump }}Server(grpcServer, foreground)
 	})
 	return
 }

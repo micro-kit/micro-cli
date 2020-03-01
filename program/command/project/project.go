@@ -262,10 +262,10 @@ func (c *cmd) TreeClientFilePath(rootPath string) (err error) {
 			}
 		} else {
 			inFileNameParent := tplRootPath + k + "/tpl/"
-			clientRootPathMdParent := clientRootPath + k + "/" + c.baseServiceName
+			clientRootPathMdParent := clientRootPath + k + "/" + strings.ReplaceAll(c.baseServiceName, "-", "")
 			log.Println(inFileNameParent)
 			if k == "proto" {
-				clientRootPathMdParent = clientRootPath + k + "/" + c.baseServiceName + "pb"
+				clientRootPathMdParent = clientRootPath + k + "/" + strings.ReplaceAll(c.baseServiceName, "-", "") + "pb"
 			}
 
 			// 目录不存在则创建目录

@@ -100,7 +100,7 @@ func (c *cmd) initMicroDB() error {
 
 // 获取ob文件路径
 func (c *cmd) getProtoFile() string {
-	protoFile := os.Getenv("GOPATH") + "/src/" + c.clientRootPath + "/proto/" + c.serviceName + "pb"
+	protoFile := os.Getenv("GOPATH") + "/src/" + c.clientRootPath + "/proto/" + strings.ReplaceAll(c.serviceName, "-", "") + "pb"
 	if c.rpcType == "Admin" {
 		protoFile += "/admin.proto"
 	} else {
@@ -111,7 +111,7 @@ func (c *cmd) getProtoFile() string {
 
 // 获取pb目录
 func (c *cmd) getProtoPath() string {
-	return os.Getenv("GOPATH") + "/src/" + c.clientRootPath + "/proto/" + c.serviceName + "pb"
+	return os.Getenv("GOPATH") + "/src/" + c.clientRootPath + "/proto/" + strings.ReplaceAll(c.serviceName, "-", "") + "pb"
 }
 
 func (c *cmd) Run(args []string) int {

@@ -17,3 +17,10 @@ import (
 type Admin struct {
 	Base
 }
+
+// NewAdmin 创建管理后台rpc对象
+func NewAdmin() *Admin {
+	return &Admin{
+		Base: NewBase(),
+	}
+}
